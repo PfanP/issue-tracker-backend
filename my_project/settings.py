@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'drf_role',
 
     # Custom Apps
-    'drf_role'
+    'core'
 ]
 
 CORS_ORIGIN_WHITELIST = (
