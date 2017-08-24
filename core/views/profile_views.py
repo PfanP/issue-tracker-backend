@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.models.profile import Profile
-from core.serializers.profile_serializers import ProfileSerializer, LoginSerializer
+from core.serializers.profile_serializers import *
 
 
 class ProfileView(generics.ListAPIView):
@@ -37,3 +37,12 @@ class LoginView(APIView):
             except (Profile.DoesNotExist, AttributeError):
                 error_response = {"non_fields_error": ["Authentication credentials may be wrong. Please try again."]}
                 return Response(error_response)
+
+
+class RegistrationView(generics.CreateAPIView):
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        user_reg_serializer = RegistrationSerializer(data=request.data)
+        if user_reg_serializer.is_valid(raise_exception=True):
+            pass
