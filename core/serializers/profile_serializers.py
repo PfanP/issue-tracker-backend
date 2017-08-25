@@ -24,7 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('user', 'role', 'date_of_birth', 'gender', 'mobile', 'address')
+        fields = ('pk', 'user', 'role', 'date_of_birth', 'gender', 'mobile', 'address')
 
 
 class LoginSerializer(serializers.Serializer):
@@ -35,27 +35,30 @@ class LoginSerializer(serializers.Serializer):
         fields = ('username', 'password')
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
+class RegistrationSerializer(serializers.Serializer):
+    role = serializers.IntegerField(required=True)
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
-    confirm_password = serializers.CharField(required=True, write_only=True)
+    confirm_password = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True)
+    gender = serializers.CharField(required=True)
 
     def validate(self, attrs):
         username = attrs.get('username')
         password = attrs.get('password')
         confirm_password = attrs.get('confirm_password')
 
-        if not username:
-            raise ValidationError({"username": ["This field is required."]})
-        if not password:
-            raise ValidationError({"password": ["This field is required."]})
-        if not confirm_password:
-            raise ValidationError({"confirm_password": ["This field is required."]})
+        user = User.objects.filter(username=username).first()
+        if user:
+            raise ValidationError({"username": ["username already exists."]})
 
         if password and confirm_password:
             if password != confirm_password:
                 raise ValidationError({"non_fields_errors": ["password and confirm_password do not match."]})
+
+        # Remove confirm password from attrs
+        attrs.pop('confirm_password')
         return attrs
 
     class Meta:
-        fields = ('username', 'password', 'confirm_password')
+        fields = ('role', 'username', 'password', 'confirm_password', 'email', 'gender')
