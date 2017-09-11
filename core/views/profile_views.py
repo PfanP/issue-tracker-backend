@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from rest_framework import generics, status
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -36,6 +37,23 @@ class LoginView(APIView):
             except (Profile.DoesNotExist, AttributeError):
                 error_response = {"non_fields_error": ["Authentication credentials may be wrong. Please try again."]}
                 return Response(error_response)
+
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        response_data = {
+            "status": status.HTTP_204_NO_CONTENT,
+            "message": "Successfully logout."
+        }
+        try:
+            request.user.auth_token.delete()
+            return Response(data=response_data)
+        except (AttributeError, ObjectDoesNotExist):
+            response_data['status'] = status.HTTP_400_BAD_REQUEST
+            response_data['message'] = "Failed to logout. Please contact."
+            return Response(data=response_data)
 
 
 class RegistrationView(generics.CreateAPIView):
