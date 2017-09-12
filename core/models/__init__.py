@@ -6,4 +6,5 @@ __author__ = 'Ashraful'
 __all__ = [
     'Profile',
     'Settings',
+    'Confirmation'
 ]

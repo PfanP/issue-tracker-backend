@@ -77,9 +77,14 @@ class RegistrationView(generics.CreateAPIView):
                     role_id=role,
                     gender=gender
                 )
+                # Make user in active as default
+                user.is_active = False
+                user.save()
                 if profile:
                     data = serializer.validated_data
                     data['message'] = "An verification link has sent to {0}.".format(data.get('email'))
                     data.pop('password')  # Trick to remove password from response
+                    # Create for confirmation entry
+
                     return Response(data=data, status=status.HTTP_201_CREATED)
         return Response(data=request.data, status=status.HTTP_400_BAD_REQUEST)
