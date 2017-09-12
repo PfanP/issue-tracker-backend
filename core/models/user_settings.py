@@ -8,4 +8,4 @@ class Settings(models.Model):
     web_notification = models.BooleanField(default=False, verbose_name="Web Notification")
 
     def __str__(self):
-        return "{0}"
+        return "{0}".format("Settings")  # TODO will update this later

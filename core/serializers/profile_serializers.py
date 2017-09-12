@@ -36,7 +36,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class RegistrationSerializer(serializers.Serializer):
-    role = serializers.IntegerField(required=True)
+    role = serializers.IntegerField(required=False)
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
     confirm_password = serializers.CharField(required=True)

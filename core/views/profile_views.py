@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from drf_role.enums import RoleEnum
 from rest_framework import generics, status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -62,7 +63,7 @@ class RegistrationView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            role = serializer.validated_data.get('role')
+            role = serializer.validated_data.get('role', RoleEnum.STAFF.value)
             username = serializer.validated_data.get('username')
             password = serializer.validated_data.get('password')
             email = serializer.validated_data.get('email')
@@ -78,6 +79,7 @@ class RegistrationView(generics.CreateAPIView):
                 )
                 if profile:
                     data = serializer.validated_data
+                    data['message'] = "An verification link has sent to {0}.".format(data.get('email'))
                     data.pop('password')  # Trick to remove password from response
                     return Response(data=data, status=status.HTTP_201_CREATED)
         return Response(data=request.data, status=status.HTTP_400_BAD_REQUEST)
