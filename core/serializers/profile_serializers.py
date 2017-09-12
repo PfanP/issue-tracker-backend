@@ -45,12 +45,16 @@ class RegistrationSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         username = attrs.get('username')
+        email = attrs.get('email')
         password = attrs.get('password')
         confirm_password = attrs.get('confirm_password')
 
-        user = User.objects.filter(username=username).first()
-        if user:
+        user_by_username = User.objects.filter(username=username).first()
+        user_by_email = User.objects.filter(email=email).first()
+        if user_by_username:
             raise ValidationError({"username": ["username already exists."]})
+        if user_by_email:
+            raise ValidationError({"email": ["email already exists."]})
 
         if password and confirm_password:
             if password != confirm_password:
