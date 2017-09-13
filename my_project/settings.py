@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    '*'
+    'localhost:3000',
 )
 
 MIDDLEWARE = [
@@ -154,3 +154,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# EMAIL SETTINGS
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'mail.iashraful.me'
+EMAIL_PORT = 26
+EMAIL_HOST_USER = 'no-reply@iashraful.me'
+EMAIL_HOST_PASSWORD = 'Al2ZKBHk~Oay'
