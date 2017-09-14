@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.models.profile import Profile
+from core.models.user_settings import Confirmation
 from core.serializers.profile_serializers import ProfileSerializer, LoginSerializer, RegistrationSerializer
 
 
@@ -28,7 +29,7 @@ class LoginView(APIView):
             password = serializer.validated_data.get('password')
             user = authenticate(username=username, password=password)
             try:
-                profile = Profile.objects.get(pk=user.pk)
+                profile = Profile.objects.get(user_id=user.pk)
                 token, _created = Token.objects.get_or_create(user_id=user.pk)
                 response = {
                     "token": token.key,
@@ -81,8 +82,10 @@ class RegistrationView(generics.CreateAPIView):
                 user.is_active = False
                 user.save()
                 if profile:
+                    success = Confirmation.send_email(user_id=user.pk)
                     data = serializer.validated_data
-                    data['message'] = "An verification link has sent to {0}.".format(data.get('email'))
+                    if success:
+                        data['message'] = "An verification link has sent to {0}.".format(data.get('email'))
                     data.pop('password')  # Trick to remove password from response
                     # Create for confirmation entry
 

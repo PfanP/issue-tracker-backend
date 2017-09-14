@@ -38,8 +38,10 @@ class Confirmation(models.Model):
             subject="User Registration Confirmation Email",
             message="",
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=['ashraful.py@gmail.com'],
+            recipient_list=[object.user.email],
             fail_silently=False,
             html_message=html_mgs
         )
-        print(status)
+        if status == 1:
+            return True
+        return False
