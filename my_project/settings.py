@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000',
+    'localhost:3000', 'project.iashraful.me'
 )
 
 MIDDLEWARE = [
