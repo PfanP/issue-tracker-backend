@@ -60,6 +60,7 @@ class LogoutView(APIView):
 
 class RegistrationView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
+    serializer_class = RegistrationSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = RegistrationSerializer(data=request.data)

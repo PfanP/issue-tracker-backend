@@ -41,13 +41,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'drf_role',
+    'rest_framework_swagger',
 
     # Custom Apps
     'core'
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:3000',
+    'localhost:3000', 'project.iashraful.me'
 )
 
 MIDDLEWARE = [
