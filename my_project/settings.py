@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'drf_role',
+    'rest_framework_swagger',
 
     # Custom Apps
     'core'
