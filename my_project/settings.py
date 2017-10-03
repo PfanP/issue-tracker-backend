@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3n$sj*_0evwi#(*8w)1#jzxp-3oz+*x6$9%8w1t29%&0jdh__m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['tester-ash.herokuapp.com', 'localhost']
 
@@ -101,7 +101,7 @@ if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'myproject',
+            'NAME': 'pms',
             'USER': 'postgres',
             'PASSWORD': 'p@ss',
             'HOST': 'localhost',
