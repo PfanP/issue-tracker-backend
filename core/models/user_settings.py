@@ -4,12 +4,13 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
 
+from core.models.base import BaseEntity
 from my_project import settings
 
 __author__ = 'Ashraful'
 
 
-class Settings(models.Model):
+class Settings(BaseEntity):
     email_notification = models.BooleanField(default=False, verbose_name="Email Notification")
     web_notification = models.BooleanField(default=False, verbose_name="Web Notification")
 
@@ -17,7 +18,7 @@ class Settings(models.Model):
         return "{0}".format("Settings")  # TODO will update this later
 
 
-class Confirmation(models.Model):
+class Confirmation(BaseEntity):
     user = models.ForeignKey(User, null=True)
     token = models.UUIDField(unique=True, default=uuid.uuid4)
     verified = models.BooleanField(default=False)

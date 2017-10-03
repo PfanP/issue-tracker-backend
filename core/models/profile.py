@@ -3,9 +3,10 @@ from django.db import models
 from drf_role.models import Role
 
 from core.helpers.enums import GenderEnum
+from core.models.base import BaseEntity
 
 
-class Profile(models.Model):
+class Profile(BaseEntity):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     date_of_birth = models.DateField(verbose_name="Birth Date", null=True)
