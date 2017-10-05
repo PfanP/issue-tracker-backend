@@ -3,11 +3,14 @@ from rest_framework import serializers
 from core.serializers.profile_serializers import ProfileSerializer
 from pms.helpers.enums import IssueStatusEnum, IssueTrackerEnum, IssuePriorityEnum
 from pms.models.projects import Project, Issue
+from pms.serializers.document_serializers import DocumentSerializer
 
 __author__ = 'Ashraful'
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    documents = DocumentSerializer(many=True, read_only=True)
+
     class Meta:
         model = Project
         fields = ('id', 'slug', 'name', 'description', 'website', 'documents')
