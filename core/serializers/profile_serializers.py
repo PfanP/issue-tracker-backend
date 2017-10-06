@@ -9,13 +9,13 @@ from core.models.profile import Profile
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('pk', 'username', 'is_active')
+        fields = ('id', 'username', 'is_active')
 
 
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
-        fields = ('pk', 'name', 'type')
+        fields = ('id', 'name', 'type')
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -24,7 +24,15 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('pk', 'user', 'role', 'date_of_birth', 'gender', 'mobile', 'address')
+        fields = ('id', 'user', 'role', 'date_of_birth', 'gender', 'mobile', 'address')
+
+
+class ProfileLiteSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'user',)
 
 
 class LoginSerializer(serializers.Serializer):

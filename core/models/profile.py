@@ -16,3 +16,10 @@ class Profile(BaseEntity):
 
     def __str__(self):
         return self.user.username
+
+    @property
+    def name(self):
+        try:
+            return self.user.username
+        except AttributeError:
+            return 'N/A'

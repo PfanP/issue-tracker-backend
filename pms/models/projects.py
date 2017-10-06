@@ -22,6 +22,7 @@ class Project(BaseEntity):
 class Issue(BaseEntity):
     title = models.CharField(max_length=256)
     description = models.TextField(verbose_name='Issue Description')
+    author = models.ForeignKey('core.Profile', related_name='author')
     project = models.ForeignKey('pms.Project')
     assigned_to = models.ForeignKey('core.Profile', on_delete=models.SET_NULL, null=True, related_name='assigned_to')
     watchers = models.ManyToManyField('core.Profile', related_name='watchers')
@@ -30,7 +31,7 @@ class Issue(BaseEntity):
     status = models.IntegerField(choices=IssueStatusEnum.choices(), default=IssueStatusEnum.NEW.value)
     tracker = models.IntegerField(choices=IssueTrackerEnum.choices(), default=IssueTrackerEnum.BUG.value)
     priority = models.IntegerField(choices=IssuePriorityEnum.choices(), default=IssuePriorityEnum.LOW.value)
-    due_date = models.DateField(null=True)
+    due_date = models.DateTimeField(auto_now_add=False, auto_now=False, null=True)
 
     class Meta:
         app_label = 'pms'
