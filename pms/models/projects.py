@@ -10,7 +10,7 @@ __author__ = 'Ashraful'
 
 class Project(BaseEntity):
     name = models.CharField(max_length=64)
-    slug = AutoSlugField(populate_from='name')
+    slug = AutoSlugField(populate_from='name', unique=True)
     description = models.TextField(null=True, blank=True)
     website = models.URLField(null=True)
     documents = models.ManyToManyField(Document)
