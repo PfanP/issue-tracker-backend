@@ -32,7 +32,7 @@ class IssueSerializer(serializers.ModelSerializer):
             'progress', 'status', 'tracker', 'priority', 'due_date', 'created_at', 'updated_at'
         )
         read_only_fields = (
-            'created_at', 'updated_at'
+            'created_at', 'updated_at', 'author'
         )
 
     def get_author(self, obj):
