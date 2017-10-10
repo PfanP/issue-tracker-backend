@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from pms.views.document_views import DocumentView
-from pms.views.projects_views import ProjectView, IssueView, ProjectDetailsView, IssueDetailsView
+from pms.views.issues_views import IssueDetailsView, IssueView
+from pms.views.projects_views import ProjectView, ProjectDetailsView
 
 urlpatterns = [
     url(r'^documents/$', DocumentView.as_view(), name="document-list-view"),
