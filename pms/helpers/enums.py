@@ -23,3 +23,10 @@ class IssuePriorityEnum(ChoiceEnum):
     NORMAL = 1
     HIGH = 2
     URGENT = 3
+
+
+class ActionEnum(ChoiceEnum):
+    CREATE = 0
+    RETRIEVE = 1
+    UPDATE = 2
+    DELETE = 3
