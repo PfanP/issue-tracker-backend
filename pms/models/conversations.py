@@ -21,8 +21,8 @@ class Comment(BaseEntity):
 
 
 class Conversation(BaseEntity):
-    issue = models.ForeignKey('pms.Issue')
-    comment = models.ForeignKey('pms.Comment')
+    issue = models.OneToOneField('pms.Issue')
+    comment = models.ForeignKey('pms.Comment', null=True, on_delete=models.SET_NULL)
 
     class Meta:
         app_label = 'pms'
