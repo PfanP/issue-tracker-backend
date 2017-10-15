@@ -5,7 +5,7 @@ from pms.helpers.enums import ActionEnum
 
 
 class ActivityLog(BaseEntity):
-    user = models.ForeignKey('core.Profile')
+    profile = models.ForeignKey('core.Profile')
     action = models.IntegerField(choices=ActionEnum.choices(), default=ActionEnum.RETRIEVE)
     operational_text = models.CharField(max_length=256, null=True, blank=True)
     model_name = models.CharField(max_length=64, null=True, blank=True)
