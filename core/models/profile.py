@@ -8,6 +8,7 @@ from core.models.base import BaseEntity
 
 class Profile(BaseEntity):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='documents/%Y/%m/', null=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     date_of_birth = models.DateField(verbose_name="Birth Date", null=True)
     gender = models.CharField(choices=GenderEnum.choices(), default=GenderEnum.MALE.value, max_length=16)

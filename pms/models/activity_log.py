@@ -23,7 +23,7 @@ class ActivityLog(BaseEntity):
         :param kwargs: all the value will come through kwargs
         :return: instance and success(True/False)
         """
-        user = kwargs.get('user_id')
+        profile = kwargs.get('profile_id')
         action = kwargs.get('action', ActionEnum.RETRIEVE.value)
         operational_text = kwargs.get('op_text')
         model_name = kwargs.get('model_name')
@@ -32,10 +32,10 @@ class ActivityLog(BaseEntity):
 
         obj = cls()
         success = False
-        if not user:
+        if not profile:
             return obj, success
         try:
-            obj.user_id = user
+            obj.profile_id = profile
             obj.action = action
             obj.operational_text = operational_text
             obj.model_name = model_name

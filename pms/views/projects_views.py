@@ -21,7 +21,7 @@ class ProjectView(ListCreateAPIView):
             try:
                 # Create activity log
                 ActivityLog.log(
-                    user_id=self.request.user.profile.pk, action=ActionEnum.CREATE.value,
+                    profile_id=self.request.user.profile.pk, action=ActionEnum.CREATE.value,
                     op_text="{0} has created {1}".format(self.request.user.profile.name, instance.name),
                     model_name=instance._meta.object_name, app_level=instance._meta.app_label,
                     reference_id=instance.pk
