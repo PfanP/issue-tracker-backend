@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from pms.helpers.enums import ActionEnum
 from pms.models.activity_log import ActivityLog
+from pms.models.conversations import Conversation
 from pms.models.projects import Issue
 from pms.serializers.issues_serializers import IssueSerializer
 
@@ -29,6 +30,8 @@ class IssueView(ListCreateAPIView):
                     model_name=instance._meta.object_name, app_level=instance._meta.app_label,
                     reference_id=instance.pk
                 )
+                # Create New conversation
+                Conversation.objects.create(issue_id=instance.pk)
             except Exception:
                 # Here can be a error log
                 pass
