@@ -24,7 +24,7 @@ class ActivityLog(BaseEntity):
         :return: instance and success(True/False)
         """
         user = kwargs.get('user_id')
-        action = kwargs.get('action', ActionEnum.RETRIEVE)
+        action = kwargs.get('action', ActionEnum.RETRIEVE.value)
         operational_text = kwargs.get('op_text')
         model_name = kwargs.get('model_name')
         app_level = kwargs.get('app_level')
