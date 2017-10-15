@@ -1,4 +1,5 @@
 from django.db import models
+
 from core.models.base import BaseEntity
 from pms.helpers.enums import ActionEnum
 
@@ -12,10 +13,16 @@ class ActivityLog(BaseEntity):
     reference_id = models.IntegerField()
 
     class Meta:
-        app_level = 'pms'
+        app_label = 'pms'
 
     @classmethod
     def log(cls, *args, **kwargs):
+        """
+        Create or return instance with a boolean type success variable
+        :param args:
+        :param kwargs: all the value will come through kwargs
+        :return: instance and success(True/False)
+        """
         user = kwargs.get('user_id')
         action = kwargs.get('action', ActionEnum.RETRIEVE)
         operational_text = kwargs.get('op_text')
@@ -24,5 +31,19 @@ class ActivityLog(BaseEntity):
         reference_id = kwargs.get('reference_id')
 
         obj = cls()
+        success = False
         if not user:
-            return obj, False
+            return obj, success
+        try:
+            obj.user_id = user
+            obj.action = action
+            obj.operational_text = operational_text
+            obj.model_name = model_name
+            obj.app_level = app_level
+            obj.reference_id = reference_id
+            obj.save()
+            # set success
+            success = True
+        except Exception:
+            pass
+        return obj, success
