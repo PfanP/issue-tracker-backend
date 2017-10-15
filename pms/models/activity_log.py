@@ -6,11 +6,11 @@ from pms.helpers.enums import ActionEnum
 
 class ActivityLog(BaseEntity):
     profile = models.ForeignKey('core.Profile')
-    action = models.IntegerField(choices=ActionEnum.choices(), default=ActionEnum.RETRIEVE)
+    action = models.IntegerField(choices=ActionEnum.choices(), default=ActionEnum.RETRIEVE.value)
     operational_text = models.CharField(max_length=256, null=True, blank=True)
     model_name = models.CharField(max_length=64, null=True, blank=True)
     app_level = models.CharField(max_length=32, null=True, blank=True)
-    reference_id = models.IntegerField()
+    reference_id = models.IntegerField(null=True)
 
     class Meta:
         app_label = 'pms'
