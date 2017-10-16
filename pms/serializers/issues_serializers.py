@@ -19,7 +19,7 @@ class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
         fields = (
-            'id', 'title', 'description', 'project', 'author', 'assigned_to', 'watchers', 'is_closed',
+            'id', 'title', 'description', 'project', 'author', 'assigned_to', 'watchers',
             'progress', 'status', 'tracker', 'priority', 'due_date', 'created_at', 'updated_at'
         )
         read_only_fields = (

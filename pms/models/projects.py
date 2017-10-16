@@ -26,7 +26,6 @@ class Issue(BaseEntity):
     project = models.ForeignKey('pms.Project')
     assigned_to = models.ForeignKey('core.Profile', on_delete=models.SET_NULL, null=True, related_name='assigned_to')
     watchers = models.ManyToManyField('core.Profile', related_name='watchers')
-    is_closed = models.BooleanField(default=False)
     progress = models.IntegerField(default=0)
     status = models.IntegerField(choices=IssueStatusEnum.choices(), default=IssueStatusEnum.NEW.value)
     tracker = models.IntegerField(choices=IssueTrackerEnum.choices(), default=IssueTrackerEnum.BUG.value)
