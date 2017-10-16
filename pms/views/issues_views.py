@@ -27,6 +27,8 @@ class IssueView(ListCreateAPIView):
             due_date = request.data.get('due_date')
             if due_date:
                 due_date = datetime.strptime(due_date, "%Y-%m-%d") + timedelta(days=1)
+            else:
+                due_date = None
             watchers = request.data.get('watchers')
             instance = serializer.save(
                 author_id=profile, project_id=project, assigned_to_id=assignee, due_date=due_date
