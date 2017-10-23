@@ -6,14 +6,17 @@ from django.db.utils import IntegrityError
 from core.models import Profile
 from drf_role.models import Role
 
+ROLE_NAMES = ('Admin', 'Manager', 'Developer', 'Tester',)
+USER_NAMES = ('robin', 'ashraful', 'john', 'jasica')
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         roles = Role.objects.all()
-        for role in roles:
+        for _index, role in enumerate(roles):
             try:
                 with transaction.atomic():
-                    user = User.objects.create_user(username=role.name.lower(), password='1234')
+                    user = User.objects.create_user(username=USER_NAMES[_index], password='1234')
                     Profile.objects.create(user_id=user.pk, role_id=role.pk)
             except IntegrityError:
                 continue
