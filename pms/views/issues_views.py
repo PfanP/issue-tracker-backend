@@ -69,3 +69,45 @@ class IssueView(ListCreateAPIView):
 class IssueDetailsView(RetrieveUpdateAPIView):
     serializer_class = IssueSerializer
     queryset = Issue.objects.filter()
+
+    def put(self, request, *args, **kwargs):
+        profile = request.user.profile.id
+        issue = self.get_object()
+        serializer = IssueSerializer(issue, data=request.data)
+
+        response_data = {}
+        if serializer.is_valid(raise_exception=True):
+            project = request.data.get('project')
+            assignee = request.data.get('assigned_to')
+            try:
+                project = Project.objects.get(pk=project).pk
+            except (Project.DoesNotExist, AttributeError):
+                response_data['project'] = ['No matching Project found.']
+                return Response(data=response_data, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                assignee = Profile.objects.get(pk=assignee).pk
+            except (Profile.DoesNotExist, AttributeError):
+                response_data['assigned_to'] = ['No matching User found.']
+                return Response(data=response_data, status=status.HTTP_400_BAD_REQUEST)
+            watchers = request.data.get('watchers')
+            instance = serializer.save(
+                author_id=profile, project_id=project, assigned_to_id=assignee,
+            )
+            if watchers:
+                watchers_objects = list(Profile.objects.filter(pk__in=watchers))
+                if instance:
+                    # Save watchers to issues
+                    instance.watchers.add(*watchers_objects)
+            try:
+                # Create activity log
+                ActivityLog.log(
+                    profile_id=request.user.profile.pk, action=ActionEnum.UPDATE.value,
+                    op_text="{0} has updated [{1}]".format(request.user.profile.name, instance.title),
+                    model_name=instance._meta.object_name, app_level=instance._meta.app_label,
+                    reference_id=instance.pk
+                )
+            except Exception:
+                # Here can be a error log
+                pass
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=request.data, status=status.HTTP_400_BAD_REQUEST)
