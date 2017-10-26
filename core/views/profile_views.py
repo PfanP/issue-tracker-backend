@@ -39,7 +39,9 @@ class LoginView(APIView):
                 token, _created = Token.objects.get_or_create(user_id=user.pk)
                 response = {
                     "token": token.key,
-                    "user_role": profile.role.name
+                    "user_role": profile.role.name,
+                    "user_id": profile.pk,
+                    "user_name": profile.name,
                 }
                 return Response(response)
             except (Profile.DoesNotExist, AttributeError):

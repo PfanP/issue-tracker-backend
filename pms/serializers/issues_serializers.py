@@ -12,6 +12,7 @@ class IssueSerializer(serializers.ModelSerializer):
     assigned_to = ProfileLiteSerializer(read_only=True)
     watchers = ProfileLiteSerializer(many=True, read_only=True)
     author = serializers.SerializerMethodField(read_only=True)
+    author_id = serializers.SerializerMethodField(read_only=True)
     created_at = serializers.SerializerMethodField(read_only=True)
     updated_at = serializers.SerializerMethodField(read_only=True)
     due_date = serializers.SerializerMethodField(read_only=True)
@@ -19,7 +20,7 @@ class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
         fields = (
-            'id', 'title', 'description', 'project', 'author', 'assigned_to', 'watchers',
+            'id', 'title', 'description', 'project', 'author', 'author_id', 'assigned_to', 'watchers',
             'progress', 'status', 'tracker', 'priority', 'due_date', 'created_at', 'updated_at'
         )
         read_only_fields = (
@@ -28,6 +29,9 @@ class IssueSerializer(serializers.ModelSerializer):
 
     def get_author(self, obj):
         return obj.author.name if obj.author else 'N/A'
+
+    def get_author_id(self, obj):
+        return obj.author.id if obj.author else 0
 
     def get_due_date(self, obj):
         try:
