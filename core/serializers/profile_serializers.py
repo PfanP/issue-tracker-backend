@@ -34,10 +34,11 @@ class ProfileDetailsSerializer(serializers.ModelSerializer):
     assigned_issues = serializers.SerializerMethodField(read_only=True)
     reported_issues = serializers.SerializerMethodField(read_only=True)
     email = serializers.SerializerMethodField(read_only=True)
+    role = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Profile
-        fields = ('id', 'name', 'email', 'registered_on', 'assigned_issues', 'reported_issues',)
+        fields = ('id', 'name', 'role', 'email', 'registered_on', 'assigned_issues', 'reported_issues',)
 
     def get_email(self, obj):
         email = obj.user.email if obj.user.email else "N/A"
@@ -53,6 +54,9 @@ class ProfileDetailsSerializer(serializers.ModelSerializer):
 
     def get_registered_on(self, obj):
         return obj.created_at.strftime("%d %b, %Y")
+
+    def get_role(self, obj):
+        return obj.role.name
 
 
 class ProfileLiteSerializer(serializers.ModelSerializer):
