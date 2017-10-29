@@ -12,5 +12,6 @@ __all__ = [
     'Conversation',
     'Comment',
     'Reply',
-    'ActivityLog'
+    'ActivityLog',
+    'IssueHistory'
 ]

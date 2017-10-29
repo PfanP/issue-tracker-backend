@@ -1,5 +1,5 @@
-from django.db import models
 from autoslug import AutoSlugField
+from django.db import models
 
 from core.models.base import BaseEntity
 from pms.helpers.enums import IssueTrackerEnum, IssueStatusEnum, IssuePriorityEnum
@@ -18,6 +18,9 @@ class Project(BaseEntity):
     class Meta:
         app_label = 'pms'
 
+    def __str__(self):
+        return self.name[:32]
+
 
 class Issue(BaseEntity):
     title = models.CharField(max_length=256)
@@ -34,3 +37,43 @@ class Issue(BaseEntity):
 
     class Meta:
         app_label = 'pms'
+
+    def __str__(self):
+        return self.title[:32]
+
+
+class IssueHistory(BaseEntity):
+    issue = models.ForeignKey('pms.Issue')
+    action_by = models.ForeignKey('core.Profile', related_name='action_by')
+    old_assignee = models.ForeignKey('core.Profile', related_name='old_assignee', null=True)
+    new_assignee = models.ForeignKey('core.Profile', related_name='new_assignee', null=True)
+    old_description = models.TextField(verbose_name='Old Description', null=True, blank=True)
+    new_description = models.TextField(verbose_name='New Description', null=True, blank=True)
+    comment = models.CharField(max_length=256, null=True, blank=True)
+
+    class Meta:
+        app_label = "pms"
+
+    @classmethod
+    def create_history(cls, *args, **kwargs):
+        try:
+            issue = kwargs.get('issue')
+            profile = kwargs.get('profile')
+            old_assignee = kwargs.get('old_assignee')
+            new_assignee = kwargs.get('new_assignee')
+            old_desc = kwargs.get('old_description')
+            new_desc = kwargs.get('new_description')
+            comment = kwargs.get('comment')
+            # Creating instance now
+            history = cls()
+            history.issue_id = issue
+            history.action_by_id = profile
+            history.old_assignee_id = old_assignee
+            history.new_assignee_id = new_assignee
+            history.old_description = old_desc
+            history.new_description = new_desc
+            history.comment = comment
+            history.save()
+        except Exception as err:
+            # Here will be an error log
+            pass
