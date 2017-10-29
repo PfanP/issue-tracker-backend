@@ -10,6 +10,8 @@ class IssueStatusEnum(ChoiceEnum):
     ON_HOLD = 2
     AWAITING_QA = 3
     QA_VERIFIED = 4
+    CLOSE = 5
+    ARCHIVE = 6
 
 
 class IssueTrackerEnum(ChoiceEnum):

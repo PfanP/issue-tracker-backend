@@ -1,9 +1,11 @@
+from datetime import datetime
 from django.contrib.auth.models import User
 from drf_role.models import Role
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from core.models.profile import Profile
+from pms.models.projects import Issue
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -25,6 +27,36 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('id', 'user', 'role', 'date_of_birth', 'gender', 'mobile', 'address')
+
+
+class ProfileDetailsSerializer(serializers.ModelSerializer):
+    registered_on = serializers.SerializerMethodField(read_only=True)
+    assigned_issues = serializers.SerializerMethodField(read_only=True)
+    reported_issues = serializers.SerializerMethodField(read_only=True)
+    email = serializers.SerializerMethodField(read_only=True)
+    role = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'name', 'role', 'email', 'registered_on', 'assigned_issues', 'reported_issues',)
+
+    def get_email(self, obj):
+        email = obj.user.email if obj.user.email else "N/A"
+        return email
+
+    def get_assigned_issues(self, obj):
+        issue_count = Issue.objects.filter(assigned_to_id=obj.pk).count()
+        return issue_count
+
+    def get_reported_issues(self, obj):
+        issue_count = Issue.objects.filter(author_id=obj.pk).count()
+        return issue_count
+
+    def get_registered_on(self, obj):
+        return obj.created_at.strftime("%d %b, %Y")
+
+    def get_role(self, obj):
+        return obj.role.name
 
 
 class ProfileLiteSerializer(serializers.ModelSerializer):

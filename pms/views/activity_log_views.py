@@ -9,3 +9,10 @@ __author__ = 'Ashraful'
 class ActivityLogView(ListAPIView):
     serializer_class = ActivityLogSerializer
     queryset = ActivityLog.objects.filter()
+
+    def get_queryset(self, **kwargs):
+        q = self.request.GET.get('q')
+        if q:
+            queryset = self.queryset.filter(operational_text__icontains=q)
+            return queryset
+        return self.queryset

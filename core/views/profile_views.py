@@ -11,11 +11,17 @@ from rest_framework.views import APIView
 
 from core.models.profile import Profile
 from core.models.user_settings import Confirmation
-from core.serializers.profile_serializers import ProfileSerializer, LoginSerializer, RegistrationSerializer
+from core.serializers.profile_serializers import ProfileSerializer, LoginSerializer, RegistrationSerializer, \
+    ProfileDetailsSerializer
 
 
 class ProfileView(generics.ListAPIView):
     serializer_class = ProfileSerializer
+    queryset = Profile.objects.filter()
+
+
+class ProfileDetailsView(generics.RetrieveAPIView):
+    serializer_class = ProfileDetailsSerializer
     queryset = Profile.objects.filter()
 
 
@@ -33,7 +39,9 @@ class LoginView(APIView):
                 token, _created = Token.objects.get_or_create(user_id=user.pk)
                 response = {
                     "token": token.key,
-                    "user_role": profile.role.name
+                    "user_role": profile.role.name,
+                    "user_id": profile.pk,
+                    "user_name": profile.name,
                 }
                 return Response(response)
             except (Profile.DoesNotExist, AttributeError):
