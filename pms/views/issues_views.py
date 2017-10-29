@@ -9,7 +9,7 @@ from pms.helpers.enums import ActionEnum
 from pms.models.activity_log import ActivityLog
 from pms.models.conversations import Conversation
 from pms.models.projects import Issue, Project, IssueHistory
-from pms.serializers.issues_serializers import IssueSerializer
+from pms.serializers.issues_serializers import IssueSerializer, IssueDetailsSerializer
 
 __author__ = 'Ashraful'
 
@@ -67,7 +67,7 @@ class IssueView(ListCreateAPIView):
 
 
 class IssueDetailsView(RetrieveUpdateAPIView):
-    serializer_class = IssueSerializer
+    serializer_class = IssueDetailsSerializer
     queryset = Issue.objects.filter()
 
     def put(self, request, *args, **kwargs):
@@ -76,7 +76,7 @@ class IssueDetailsView(RetrieveUpdateAPIView):
         # save some data to make a better history
         current_assignee = issue.assigned_to
         current_desc = issue.description
-        serializer = IssueSerializer(issue, data=request.data)
+        serializer = IssueDetailsSerializer(issue, data=request.data)
 
         response_data = {}
         if serializer.is_valid(raise_exception=True):
