@@ -10,10 +10,17 @@ __author__ = 'Ashraful'
 class IssueHistorySerializer(serializers.ModelSerializer):
     old_assignee = ProfileLiteSerializer(read_only=True)
     new_assignee = ProfileLiteSerializer(read_only=True)
+    created_at = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = IssueHistory
-        fields = ('id', 'issue', 'old_assignee', 'new_assignee', 'old_description', 'new_description', 'comment')
+        fields = (
+            'id', 'issue', 'old_assignee', 'new_assignee', 'old_description',
+            'new_description', 'comment', 'created_at'
+        )
+
+    def get_created_at(self, obj):
+        return obj.created_at.strftime("%d %b, %Y")
 
 
 class IssueSerializer(serializers.ModelSerializer):
