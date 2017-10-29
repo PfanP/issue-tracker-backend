@@ -8,7 +8,7 @@ from core.models.profile import Profile
 from pms.helpers.enums import ActionEnum
 from pms.models.activity_log import ActivityLog
 from pms.models.conversations import Conversation
-from pms.models.projects import Issue, Project
+from pms.models.projects import Issue, Project, IssueHistory
 from pms.serializers.issues_serializers import IssueSerializer
 
 __author__ = 'Ashraful'
@@ -73,6 +73,9 @@ class IssueDetailsView(RetrieveUpdateAPIView):
     def put(self, request, *args, **kwargs):
         profile = request.user.profile.id
         issue = self.get_object()
+        # save some data to make a better history
+        current_assignee = issue.assigned_to
+        current_desc = issue.description
         serializer = IssueSerializer(issue, data=request.data)
 
         response_data = {}
@@ -105,6 +108,13 @@ class IssueDetailsView(RetrieveUpdateAPIView):
                     op_text="{0} has updated [{1}]".format(request.user.profile.name, instance.title),
                     model_name=instance._meta.object_name, app_level=instance._meta.app_label,
                     reference_id=instance.pk
+                )
+                # Create History
+                IssueHistory.create_history(
+                    issue=instance.pk, profile=request.user.profile.pk, progress=instance.progress,
+                    old_assignee=current_assignee.pk, new_assignee=instance.assigned_to_id,
+                    new_description=instance.description, old_description=current_desc,
+                    comment="{0} has updated {1}".format(request.user.profile.name, instance.title)
                 )
             except Exception:
                 # Here can be a error log
