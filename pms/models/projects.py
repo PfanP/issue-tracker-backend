@@ -43,6 +43,7 @@ class Issue(BaseEntity):
 
 
 class IssueHistory(BaseEntity):
+    issue = models.ForeignKey('pms.Issue')
     action_by = models.ForeignKey('core.Profile', related_name='action_by')
     old_assignee = models.ForeignKey('core.Profile', related_name='old_assignee', null=True)
     new_assignee = models.ForeignKey('core.Profile', related_name='new_assignee', null=True)
@@ -56,6 +57,7 @@ class IssueHistory(BaseEntity):
     @classmethod
     def create_history(cls, *args, **kwargs):
         try:
+            issue = kwargs.get('issue')
             profile = kwargs.get('profile')
             old_assignee = kwargs.get('old_assignee')
             new_assignee = kwargs.get('new_assignee')
@@ -64,6 +66,7 @@ class IssueHistory(BaseEntity):
             comment = kwargs.get('comment')
             # Creating instance now
             history = cls()
+            history.issue_id = issue
             history.action_by_id = profile
             history.old_assignee_id = old_assignee
             history.new_assignee_id = new_assignee
