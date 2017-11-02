@@ -8,6 +8,9 @@ from drf_role.models import Role
 
 ROLE_NAMES = ('Admin', 'Manager', 'Developer', 'Tester',)
 USER_NAMES = ('robin', 'ashraful', 'john', 'jasica')
+USER_EMAILS = (
+    'ashrafulrobin3@gmail.com', 'ashraful.py@gmail.com', 'ashrafulrobin3@gmail.com', 'ashraful.py@gmail.com'
+)
 
 
 class Command(BaseCommand):
@@ -17,6 +20,8 @@ class Command(BaseCommand):
             try:
                 with transaction.atomic():
                     user = User.objects.create_user(username=USER_NAMES[_index], password='1234')
+                    user.email = USER_EMAILS[_index]
+                    user.save()
                     Profile.objects.create(user_id=user.pk, role_id=role.pk)
             except IntegrityError:
                 continue

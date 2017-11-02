@@ -1,5 +1,8 @@
 from autoslug import AutoSlugField
+from django.conf import settings
+from django.core.mail import send_mail
 from django.db import models
+from django.utils.safestring import mark_safe
 
 from core.models.base import BaseEntity
 from pms.helpers.enums import IssueTrackerEnum, IssueStatusEnum, IssuePriorityEnum
@@ -77,6 +80,39 @@ class IssueHistory(BaseEntity):
             history.new_description = new_desc
             history.comment = comment
             history.save()
+            # Send an email to assigned user
+            cls.send_email(
+                email=history.new_assignee.user.email,
+                issue=history.issue_id,
+                user_name=history.new_assignee.name,
+                description=history.new_description
+            )
         except Exception as err:
             # Here will be an error log
             pass
+
+    @classmethod
+    def send_email(cls, *args, **kwargs):
+        email = kwargs.get('email')
+        issue_number = kwargs.get('issue')
+        user_name = kwargs.get('user_name')
+        description = kwargs.get('description')
+        if not email:
+            return None
+        message = mark_safe("""
+            <h3 style="text-align: center">Issue #{0}</h3>
+            <p><b>Assigned to:</b> {1}</p>
+            <p><b>Description:</b> {2}</p>
+            <p style="text-align: center"><b>This is automated email. please don't reply.</b></p>
+        """.format(issue_number, user_name, description))
+        status = send_mail(
+            subject="Issue #{0}".format(issue_number),
+            message="",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email],
+            fail_silently=False,
+            html_message=message
+        )
+        if status == 1:
+            return True
+        return False
