@@ -84,7 +84,7 @@ class IssueDetailsSerializer(serializers.ModelSerializer):
         )
 
     def get_history(self, obj):
-        histories = IssueHistory.objects.filter(issue_id=obj.pk)
+        histories = IssueHistory.objects.filter(issue_id=obj.pk).order_by('pk')
         return IssueHistorySerializer(histories, many=True).data
 
     def get_author(self, obj):

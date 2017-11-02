@@ -83,15 +83,19 @@ class IssueHistory(BaseEntity):
             history.comment = comment
             history.save()
             # Send an email to assigned user
-            thread = threading.Thread(
-                target=cls.send_email(
-                    email=history.new_assignee.user.email,
-                    issue=history.issue_id,
-                    user_name=history.new_assignee.name,
-                    description=history.new_description
+            try:
+                thread = threading.Thread(
+                    target=cls.send_email(
+                        email=history.new_assignee.user.email,
+                        issue=history.issue_id,
+                        user_name=history.new_assignee.name,
+                        description=history.new_description
+                    )
                 )
-            )
-            thread.start()
+                thread.start()
+            except TypeError:
+                # May be here can be an error log
+                return history
             return history
         except Exception as err:
             # Here will be an error log
