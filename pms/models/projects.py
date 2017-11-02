@@ -1,3 +1,5 @@
+import threading
+
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.core.mail import send_mail
@@ -81,12 +83,16 @@ class IssueHistory(BaseEntity):
             history.comment = comment
             history.save()
             # Send an email to assigned user
-            cls.send_email(
-                email=history.new_assignee.user.email,
-                issue=history.issue_id,
-                user_name=history.new_assignee.name,
-                description=history.new_description
+            thread = threading.Thread(
+                target=cls.send_email(
+                    email=history.new_assignee.user.email,
+                    issue=history.issue_id,
+                    user_name=history.new_assignee.name,
+                    description=history.new_description
+                )
             )
+            thread.start()
+            return history
         except Exception as err:
             # Here will be an error log
             pass
