@@ -20,7 +20,7 @@ class IssueHistorySerializer(serializers.ModelSerializer):
         )
 
     def get_created_at(self, obj):
-        return obj.created_at.strftime("%d %b, %Y")
+        return obj.created_at.strftime("%c")
 
 
 class IssueSerializer(serializers.ModelSerializer):
