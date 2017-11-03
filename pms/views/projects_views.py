@@ -4,7 +4,8 @@ from rest_framework.response import Response
 
 from pms.helpers.enums import ActionEnum
 from pms.models.activity_log import ActivityLog
-from pms.models.projects import Project, Issue
+from pms.models.issues import Issue
+from pms.models.projects import Project
 from pms.serializers.issues_serializers import IssueSerializer
 from pms.serializers.projects_serializers import ProjectSerializer
 

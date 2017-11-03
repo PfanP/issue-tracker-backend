@@ -3,7 +3,8 @@ from rest_framework import serializers
 from core.serializers.profile_serializers import ProfileLiteSerializer
 from pms.helpers.enums import ActionEnum
 from pms.models.activity_log import ActivityLog
-from pms.models.projects import Project, Issue
+from pms.models.issues import Issue
+from pms.models.projects import Project
 
 __author__ = 'Ashraful'
 

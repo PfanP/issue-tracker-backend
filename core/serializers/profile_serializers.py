@@ -5,7 +5,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from core.models.profile import Profile
-from pms.models.projects import Issue
+from pms.models.issues import Issue
 
 
 class UserSerializer(serializers.ModelSerializer):
