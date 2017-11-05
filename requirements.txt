@@ -10,7 +10,7 @@ django-cors-headers==2.1.0
 django-crequest==2016.3.16
 django-rest-swagger==2.1.2
 djangorestframework==3.6.3
-drf-role==0.0.2
+drf-role==0.0.3
 gunicorn==19.7.1
 idna==2.6
 itypes==1.1.0

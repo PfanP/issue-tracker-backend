@@ -79,15 +79,12 @@ class RegistrationSerializer(serializers.Serializer):
     role = serializers.IntegerField(required=False)
     username = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
-    confirm_password = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     gender = serializers.CharField(required=True)
 
     def validate(self, attrs):
         username = attrs.get('username')
         email = attrs.get('email')
-        password = attrs.get('password')
-        confirm_password = attrs.get('confirm_password')
 
         user_by_username = User.objects.filter(username=username).first()
         user_by_email = User.objects.filter(email=email).first()
@@ -95,14 +92,7 @@ class RegistrationSerializer(serializers.Serializer):
             raise ValidationError({"username": ["username already exists."]})
         if user_by_email:
             raise ValidationError({"email": ["email already exists."]})
-
-        if password and confirm_password:
-            if password != confirm_password:
-                raise ValidationError({"non_fields_errors": ["password and confirm_password do not match."]})
-
-        # Remove confirm password from attrs
-        attrs.pop('confirm_password')
         return attrs
 
     class Meta:
-        fields = ('role', 'username', 'password', 'confirm_password', 'email', 'gender')
+        fields = ('role', 'username', 'password', 'email', 'gender')

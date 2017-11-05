@@ -73,7 +73,7 @@ class RegistrationView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            role = serializer.validated_data.get('role', RoleEnum.STAFF.value)
+            role = serializer.validated_data.get('role')
             username = serializer.validated_data.get('username')
             password = serializer.validated_data.get('password')
             email = serializer.validated_data.get('email')
@@ -88,15 +88,15 @@ class RegistrationView(generics.CreateAPIView):
                     gender=gender
                 )
                 # Make user in active as default
-                user.is_active = False
-                user.save()
-                if profile:
-                    success = Confirmation.send_email(user_id=user.pk)
-                    data = serializer.validated_data
-                    if success:
-                        data['message'] = "An verification link has sent to {0}.".format(data.get('email'))
-                    data.pop('password')  # Trick to remove password from response
-                    # Create for confirmation entry
+                # user.is_active = False
+                # user.save()
+                # if profile:
+                #     success = Confirmation.send_email(user_id=user.pk)
+                #     data = serializer.validated_data
+                #     if success:
+                #         data['message'] = "An verification link has sent to {0}.".format(data.get('email'))
+                #     data.pop('password')  # Trick to remove password from response
+                #     # Create for confirmation entry
 
-                    return Response(data=data, status=status.HTTP_201_CREATED)
+                return Response(data=data, status=status.HTTP_201_CREATED)
         return Response(data=request.data, status=status.HTTP_400_BAD_REQUEST)
