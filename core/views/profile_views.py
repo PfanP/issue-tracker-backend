@@ -98,5 +98,5 @@ class RegistrationView(generics.CreateAPIView):
                 #     data.pop('password')  # Trick to remove password from response
                 #     # Create for confirmation entry
 
-                return Response(data=data, status=status.HTTP_201_CREATED)
+                return Response(data=serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(data=request.data, status=status.HTTP_400_BAD_REQUEST)
