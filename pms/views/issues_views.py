@@ -19,6 +19,12 @@ class IssueView(ListCreateAPIView):
     serializer_class = IssueSerializer
     queryset = Issue.objects.filter()
 
+    def get_queryset(self):
+        queryset = self.queryset
+        projects = self.request.GET.get('project', '').split(',')
+        queryset = queryset.filter(project_id__in=projects)
+        return queryset
+
     def post(self, request, *args, **kwargs):
         profile = request.user.profile.id
         serializer = self.serializer_class(data=request.data)
