@@ -21,9 +21,13 @@ class IssueView(ListCreateAPIView):
 
     def get_queryset(self):
         queryset = self.queryset
-        projects = self.request.GET.get('project', '').split(',')
-        queryset = queryset.filter(project_id__in=projects)
-        return queryset
+        try:
+            projects = list(map(int, self.request.GET.get('project', '').split(',')))
+            if projects:
+                queryset = queryset.filter(project_id__in=projects)
+            return queryset
+        except ValueError:
+            return queryset
 
     def post(self, request, *args, **kwargs):
         profile = request.user.profile.id
