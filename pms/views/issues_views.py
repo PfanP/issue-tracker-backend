@@ -22,7 +22,13 @@ class IssueView(ListCreateAPIView):
     def get_queryset(self):
         queryset = self.queryset
         try:
-            projects = list(map(int, self.request.GET.get('project', '').split(',')))
+            project_list = list(map(str, self.request.GET.get('project', '').split(',')))
+            projects = []
+            for pr in project_list:
+                try:
+                    projects.append(int(pr))
+                except ValueError:
+                    continue
             if projects:
                 queryset = queryset.filter(project_id__in=projects)
             return queryset
