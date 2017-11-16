@@ -8,4 +8,4 @@ __author__ = 'Ashraful'
 class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
-        fields = ('title', 'description', 'file',)
+        fields = ('pk', 'title', 'description', 'file',)

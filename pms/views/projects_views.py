@@ -4,8 +4,10 @@ from rest_framework.response import Response
 
 from pms.helpers.enums import ActionEnum
 from pms.models.activity_log import ActivityLog
+from pms.models.documents import Document
 from pms.models.issues import Issue
 from pms.models.projects import Project
+from pms.serializers.document_serializers import DocumentSerializer
 from pms.serializers.issues_serializers import IssueSerializer
 from pms.serializers.projects_serializers import ProjectSerializer
 
@@ -20,6 +22,11 @@ class ProjectView(ListCreateAPIView):
         instance = serializer.save()
         if instance:
             try:
+                # Save documents
+                doc_pks = self.request.data.get('documents')
+                if doc_pks:
+                    entries = Document.objects.filter(pk__in=doc_pks)
+                    instance.documents.add(*entries)
                 # Create activity log
                 ActivityLog.log(
                     profile_id=self.request.user.profile.pk, action=ActionEnum.CREATE.value,
