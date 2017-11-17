@@ -22,6 +22,8 @@ class IssueView(ListCreateAPIView):
     def get_queryset(self):
         queryset = self.queryset
         try:
+            user_filter = self.request.GET.get('filter_me')
+            reported_filter = self.request.GET.get('filter_reported')
             project_list = list(map(str, self.request.GET.get('project', '').split(',')))
             projects = []
             for pr in project_list:
@@ -31,6 +33,12 @@ class IssueView(ListCreateAPIView):
                     continue
             if projects:
                 queryset = queryset.filter(project_id__in=projects)
+            if user_filter == "1":
+                user = self.request.user.profile.pk
+                queryset = queryset.filter(assigned_to_id=user)
+            if reported_filter == "1":
+                user = self.request.user.profile.pk
+                queryset = queryset.filter(author_id=user)
             return queryset
         except ValueError:
             return queryset
