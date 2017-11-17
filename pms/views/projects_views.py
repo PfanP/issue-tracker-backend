@@ -18,6 +18,14 @@ class ProjectView(ListCreateAPIView):
     serializer_class = ProjectSerializer
     queryset = Project.objects.filter()
 
+    def get_queryset(self):
+        params = self.request.GET
+        name = params.get('name')
+        queryset = self.queryset
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
+
     def perform_create(self, serializer):
         instance = serializer.save()
         if instance:
