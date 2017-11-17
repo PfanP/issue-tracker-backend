@@ -9,3 +9,4 @@ class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Document
         fields = ('pk', 'title', 'description', 'file',)
+        read_only_fields = ('file',)
