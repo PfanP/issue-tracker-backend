@@ -14,7 +14,7 @@ class IssueConversationView(RetrieveAPIView):
 
     def get_object(self):
         issue_pk = self.kwargs.get('pk')
-        queryset = Conversation.objects.get(issue_id=issue_pk)
+        queryset = Conversation.objects.filter(issue_id=issue_pk).first()
         return queryset
 
 
@@ -28,7 +28,7 @@ class ConversationDetailsView(APIView):
     queryset = Conversation.objects.filter()
 
     def get(self, request, *args, **kwargs):
-        data = self.queryset.get(pk=kwargs.get('pk'))
+        data = self.queryset.filter(pk=kwargs.get('pk')).first()
         serializer = self.serializer_class(data)
         return Response(serializer.data)
 
