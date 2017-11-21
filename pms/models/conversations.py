@@ -6,6 +6,7 @@ __author__ = 'Ashraful'
 
 
 class Reply(BaseEntity):
+    author = models.ForeignKey('core.Profile')
     text = models.CharField(max_length=360)
 
     class Meta:
@@ -13,6 +14,7 @@ class Reply(BaseEntity):
 
 
 class Comment(BaseEntity):
+    author = models.ForeignKey('core.Profile')
     text = models.CharField(max_length=512)
     replies = models.ManyToManyField('pms.Reply')
 
