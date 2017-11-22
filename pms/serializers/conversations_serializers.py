@@ -24,8 +24,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class ConversationSerializer(serializers.ModelSerializer):
-    comment = CommentSerializer(read_only=True)
+    comments = CommentSerializer(read_only=True, many=True)
 
     class Meta:
         model = Conversation
-        fields = ('id', 'comment')
+        fields = ('id', 'comments')

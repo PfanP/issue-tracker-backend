@@ -60,11 +60,9 @@ class ProfileDetailsSerializer(serializers.ModelSerializer):
 
 
 class ProfileLiteSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
-
     class Meta:
         model = Profile
-        fields = ('id', 'user',)
+        fields = ('id', 'name',)
 
 
 class LoginSerializer(serializers.Serializer):

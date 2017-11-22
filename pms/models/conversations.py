@@ -24,7 +24,7 @@ class Comment(BaseEntity):
 
 class Conversation(BaseEntity):
     issue = models.OneToOneField('pms.Issue')
-    comment = models.ForeignKey('pms.Comment', null=True, on_delete=models.SET_NULL)
+    comments = models.ManyToManyField('pms.Comment')
 
     class Meta:
         app_label = 'pms'

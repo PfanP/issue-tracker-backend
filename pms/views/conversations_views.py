@@ -42,8 +42,7 @@ class ConversationDetailsView(APIView):
                 comment = comment_serializer.save(author_id=current_user)
                 if comment:
                     conv = self.queryset.get(pk=kwargs.get('pk'))
-                    conv.comment_id = comment.pk
-                    conv.save()
+                    conv.comments.add(comment)
             return Response(data=comment_serializer.data)
         if 'reply' in data.keys() and data.get('reply') is True:
             # Here will be reply save
