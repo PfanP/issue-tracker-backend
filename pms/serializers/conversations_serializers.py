@@ -16,16 +16,26 @@ class ReplySerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     author = ProfileLiteSerializer(read_only=True)
-    replies = ReplySerializer(read_only=True, many=True)
+    replies = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Comment
         fields = ('id', 'author', 'text', 'replies')
 
+    def get_replies(self, obj):
+        entries = obj.replies.order_by('-created_at', '-updated_at')
+        data = ReplySerializer(entries, many=True).data
+        return data
+
 
 class ConversationSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(read_only=True, many=True)
+    comments = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Conversation
         fields = ('id', 'comments')
+
+    def get_comments(self, obj):
+        entries = obj.comments.order_by('-created_at', '-updated_at')
+        data = CommentSerializer(entries, many=True).data
+        return data

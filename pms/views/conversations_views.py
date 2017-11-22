@@ -43,6 +43,7 @@ class ConversationDetailsView(APIView):
                 if comment:
                     conv = self.queryset.get(pk=kwargs.get('pk'))
                     conv.comments.add(comment)
+                    conv.save()
             return Response(data=comment_serializer.data)
         if 'reply' in data.keys() and data.get('reply') is True:
             # Here will be reply save
@@ -52,6 +53,7 @@ class ConversationDetailsView(APIView):
                 reply = reply_serializer.save(author_id=current_user)
                 comment = Comment.objects.get(pk=comment_pk)
                 comment.replies.add(reply)
+                comment.save()
             return Response(data=reply_serializer.data)
         return Response(data=request.data, status=status.HTTP_400_BAD_REQUEST)
 
