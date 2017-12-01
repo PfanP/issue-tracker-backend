@@ -48,19 +48,22 @@ class Command(BaseCommand):
     def create_issues(self):
         for project in Project.objects.all():
             for title in FAKE_ISSUE_TITLES:
-                try:
-                    issue = Issue.objects.filter(title=title, project_id=project.pk).first()
-                    if not issue:
-                        issue = Issue()
+                with transaction.atomic():
+                    try:
+                        issue = Issue.objects.filter(title=title, project_id=project.pk).first()
+                        if not issue:
+                            issue = Issue()
 
-                    issue.title = title
-                    issue.description = FAKE_DESCRIPTION,
-                    issue.project_id = project.pk
-                    issue.assigned_to_id = Profile.objects.filter(user__username='john').first().pk
-                    issue.author_id = Profile.objects.filter(user__username='jasica').first().pk
-                    issue.save()
-                except Exception as exp:
-                    print(exp)
+                        issue.title = title
+                        issue.description = FAKE_DESCRIPTION,
+                        issue.project_id = project.pk
+                        issue.assigned_to_id = Profile.objects.filter(user__username='john').first().pk
+                        issue.author_id = Profile.objects.filter(user__username='jasica').first().pk
+                        issue.save()
+                        # Create New conversation
+                        Conversation.objects.get_or_create(issue_id=issue.pk)
+                    except Exception as exp:
+                        print(exp)
             print("Issues Created or Updated for project -- {0}".format(project.name))
 
     def handle(self, *args, **options):
