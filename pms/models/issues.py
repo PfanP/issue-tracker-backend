@@ -34,8 +34,8 @@ class Issue(BaseEntity):
 class IssueHistory(BaseEntity):
     issue = models.ForeignKey('pms.Issue')
     action_by = models.ForeignKey('core.Profile', related_name='action_by')
-    new_progress = models.IntegerField(default=0)
     old_progress = models.IntegerField(default=0)
+    new_progress = models.IntegerField(default=0)
     old_assignee = models.ForeignKey('core.Profile', related_name='old_assignee', null=True)
     new_assignee = models.ForeignKey('core.Profile', related_name='new_assignee', null=True)
     old_description = models.TextField(verbose_name='Old Description', null=True, blank=True)
@@ -50,8 +50,8 @@ class IssueHistory(BaseEntity):
         try:
             issue = kwargs.get('issue')
             profile = kwargs.get('profile')
-            new_progress = kwargs.get('new_progress')
             old_progress = kwargs.get('old_progress')
+            new_progress = kwargs.get('new_progress')
             old_assignee = kwargs.get('old_assignee')
             new_assignee = kwargs.get('new_assignee')
             old_desc = kwargs.get('old_description')
@@ -61,8 +61,8 @@ class IssueHistory(BaseEntity):
             history = cls()
             history.issue_id = issue
             history.action_by_id = profile
+            history.old_progress = old_progress
             history.new_progress = new_progress
-            history.new_progress = old_progress
             history.old_assignee_id = old_assignee
             history.new_assignee_id = new_assignee
             history.old_description = old_desc

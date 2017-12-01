@@ -138,7 +138,7 @@ class IssueDetailsView(RetrieveUpdateAPIView):
                 # Create History
                 IssueHistory.create_history(
                     issue=instance.pk, profile=request.user.profile.pk,
-                    new_progress=instance.progress, old_progress=old_progress,
+                    old_progress=old_progress, new_progress=instance.progress,
                     old_assignee=current_assignee.pk, new_assignee=instance.assigned_to_id,
                     new_description=instance.description, old_description=current_desc,
                     comment="{0} has updated {1}".format(request.user.profile.name, instance.title)
