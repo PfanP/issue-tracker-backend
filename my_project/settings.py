@@ -23,6 +23,7 @@ SECRET_KEY = '3n$sj*_0evwi#(*8w)1#jzxp-3oz+*x6$9%8w1t29%&0jdh__m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+SEND_EMAIL = False
 
 ALLOWED_HOSTS = ['tester-ash.herokuapp.com', 'localhost']
 
