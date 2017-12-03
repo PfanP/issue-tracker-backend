@@ -9,6 +9,7 @@ from pms.helpers.enums import ActionEnum
 from pms.models.activity_log import ActivityLog
 from pms.models.conversations import Conversation
 from pms.models.issues import Issue, IssueHistory
+from pms.helpers.enums import IssueStatusEnum
 from pms.models.projects import Project
 from pms.serializers.issues_serializers import IssueSerializer, IssueDetailsSerializer
 
@@ -17,7 +18,7 @@ __author__ = 'Ashraful'
 
 class IssueView(ListCreateAPIView):
     serializer_class = IssueSerializer
-    queryset = Issue.objects.filter()
+    queryset = Issue.objects.exclude(status=IssueStatusEnum.CLOSE.value)
 
     def get_queryset(self):
         queryset = self.queryset

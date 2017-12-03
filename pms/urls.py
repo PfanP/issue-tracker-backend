@@ -6,6 +6,7 @@ from pms.views.document_views import DocumentCreateView, DocumentListView
 from pms.views.issues_views import IssueDetailsView, IssueView
 from pms.views.progress_report_chart_views import ProgressReportChartView
 from pms.views.projects_views import ProjectView, ProjectDetailsView, ProjectIssuesView
+from pms.views.issue_close_views import IssueCloseView
 
 urlpatterns = [
     url(r'^documents/$', DocumentListView.as_view(), name="document-list-view"),
@@ -21,4 +22,5 @@ urlpatterns = [
     url(r'^conversations/(?P<pk>[0-9]+)/$', ConversationDetailsView.as_view(), name='conversations-details-view'),
     url(r'^conversations/(?P<pk>[0-9]+)/comments/$', CommentView.as_view(), name='comment-list-view'),
     url(r'^progress-report/$', ProgressReportChartView.as_view(), name="progress-report-view"),
+    url(r'^close-issues/$', IssueCloseView.as_view(), name="issue-close-view"),
 ]
