@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from pms.views.activity_log_views import ActivityLogView
 from pms.views.conversations_views import IssueConversationView, ConversationView, CommentView, ConversationDetailsView
+from pms.views.daily_reports_views import DailyReportsView
 from pms.views.document_views import DocumentCreateView, DocumentListView
 from pms.views.issues_views import IssueDetailsView, IssueView
 from pms.views.progress_report_chart_views import ProgressReportChartView
@@ -23,4 +24,5 @@ urlpatterns = [
     url(r'^conversations/(?P<pk>[0-9]+)/comments/$', CommentView.as_view(), name='comment-list-view'),
     url(r'^progress-report/$', ProgressReportChartView.as_view(), name="progress-report-view"),
     url(r'^close-issues/$', IssueCloseView.as_view(), name="issue-close-view"),
+    url(r'^daily-reports/$', DailyReportsView.as_view(), name="daily-reports-view"),
 ]
