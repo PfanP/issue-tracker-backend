@@ -65,6 +65,7 @@ class IssueSerializer(serializers.ModelSerializer):
 class IssueDetailsSerializer(serializers.ModelSerializer):
     project = ProjectLiteSerializer(read_only=True)
     assigned_to = ProfileLiteSerializer(read_only=True)
+    updated_by = ProfileLiteSerializer(read_only=True)
     watchers = ProfileLiteSerializer(many=True, read_only=True)
     author = serializers.SerializerMethodField(read_only=True)
     author_id = serializers.SerializerMethodField(read_only=True)
@@ -76,8 +77,8 @@ class IssueDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
         fields = (
-            'id', 'title', 'description', 'project', 'author', 'author_id', 'assigned_to', 'history', 'watchers',
-            'progress', 'status', 'tracker', 'priority', 'due_date', 'created_at', 'updated_at'
+            'id', 'title', 'description', 'project', 'author', 'author_id', 'assigned_to', 'updated_by',
+            'history', 'watchers', 'progress', 'status', 'tracker', 'priority', 'due_date', 'created_at', 'updated_at'
         )
         read_only_fields = (
             'created_at', 'updated_at', 'author'

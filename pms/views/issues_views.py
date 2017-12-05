@@ -121,7 +121,8 @@ class IssueDetailsView(RetrieveUpdateAPIView):
                 return Response(data=response_data, status=status.HTTP_400_BAD_REQUEST)
             watchers = request.data.get('watchers')
             instance = serializer.save(
-                author_id=profile, project_id=project, assigned_to_id=assignee,
+                author_id=profile, project_id=project,
+                assigned_to_id=assignee, updated_by_id=request.user.profile.pk
             )
             if watchers:
                 watchers_objects = list(Profile.objects.filter(pk__in=watchers))

@@ -17,6 +17,7 @@ class Issue(BaseEntity):
     author = models.ForeignKey('core.Profile', related_name='author')
     project = models.ForeignKey('pms.Project')
     assigned_to = models.ForeignKey('core.Profile', on_delete=models.SET_NULL, null=True, related_name='assigned_to')
+    updated_by = models.ForeignKey('core.Profile', on_delete=models.SET_NULL, null=True, related_name='updated_by')
     watchers = models.ManyToManyField('core.Profile', related_name='watchers')
     progress = models.IntegerField(default=0)
     status = models.IntegerField(choices=IssueStatusEnum.choices(), default=IssueStatusEnum.NEW.value)
