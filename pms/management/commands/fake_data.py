@@ -1,17 +1,14 @@
-from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from django.db.utils import IntegrityError
 
 from core.models import Profile
 from pms.models import *
 
-
 USER_NAMES = ('robin', 'ashraful', 'john', 'jasica')
 FAKE_PROJECT_NAMES = (
-        'Internship Project', 'School Management System', 'Static Generator Maker', 'Sales Tracker', 
-        'Survey Monitor', 'Railway Tacking System', 'Home Monitor System', 'Data Mining with ML & NLP'
-    )
+    'Internship Project', 'School Management System', 'Static Generator Maker', 'Sales Tracker',
+    'Survey Monitor', 'Railway Tacking System', 'Home Monitor System', 'Data Mining with ML & NLP'
+)
 
 FAKE_DESCRIPTION = "<p><h4>This is dummy description. Applicatioble for all issues and projects.</h4>\
 </p><p><strong>Overview&nbsp;</strong></p><p>This is dummy description for this issue. Actually, the software\
@@ -22,9 +19,12 @@ FAKE_DESCRIPTION = "<p><h4>This is dummy description. Applicatioble for all issu
  Shorting in table column.</li><li>Report Export facilities.</li></ul>"
 
 FAKE_ISSUE_TITLES = (
-    "Enabled searching in every view.", "Add google font so that, it can show in evert browser and every size of screen.",
-    "Added user based dashboard.", "Add user's activity report.", "Add some chart reports like LineChart, PieChart etc..",
-    "Please make sperated each functionality when test runner view ",  "Add User own profile view", "Fixed Reponsive Design Issue."
+    "Enabled searching in every view.",
+    "Add google font so that, it can show in evert browser and every size of screen.",
+    "Added user based dashboard.", "Add user's activity report.",
+    "Add some chart reports like LineChart, PieChart etc..",
+    "Please make sperated each functionality when test runner view ", "Add User own profile view",
+    "Fixed Reponsive Design Issue."
 )
 
 
