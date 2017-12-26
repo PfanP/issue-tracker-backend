@@ -18,7 +18,7 @@ class Command(BaseCommand):
             print("Updating... {0}".format(fake_project_name))
 
             for issue in project.issue_set.all():
-                issue.created_at = datetime.now().replace(month=random.randrange(8, 12), day=15)
+                issue.created_at = datetime.now().replace(month=random.randrange(8, 13), day=15)
                 issue.progress = random.randrange(15, 85)
                 issue.save()
 

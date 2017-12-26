@@ -30,7 +30,7 @@ class DailyReportsView(APIView):
             project = Project.objects.filter(slug=d.get('project__slug')).first()
             data = OrderedDict()
             data['updated_by_id'] = d.get('updated_by_id')
-            data['updated_by_name'] = d.get('updated_by__user__username')
+            data['updated_by_name'] = d.get('updated_by__user__username', 'System Bot')
             data['project_slug'] = d.get('project__slug')
             data['project_name'] = d.get('project__name')
             data['total_progress'] = int(d.get('total_progress') / project.issue_set.count())
@@ -44,7 +44,7 @@ class DailyReportsView(APIView):
 
         base_queryset = Issue.objects.filter(updated_at__gte=time_from, updated_at__lte=time_to)
         report_data = list()
-        plain_data = base_queryset.values('project_id', 'project__name', today_updated=Count('pk'))
+        plain_data = base_queryset.values('project_id', 'project__name').annotate(today_updated=Count('pk'))
         for d in plain_data:
             data = OrderedDict()
             project = Project.objects.get(pk=d.get('project_id'))
