@@ -9,7 +9,7 @@ django-autoslug==1.9.3
 django-cors-headers==2.1.0
 django-crequest==2016.3.16
 django-rest-swagger==2.1.2
-djangorestframework==3.6.3
+djangorestframework==3.11.2
 drf-role==0.0.4
 gunicorn==19.7.1
 idna==2.6
